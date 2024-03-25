@@ -6,20 +6,28 @@
   </head>
   <body>
     <h1>Manager Page</h1>
+    <h2>Manager Details</h2>
     <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
     <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
+    <form action="/managers/{{manager.id}}" method="post">
+      <input type="submit" value="Update Manager Name">
+    </form>
 
-    <!-- To have a delete button with a post request, we need a form -->
-    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
+    <h2>Squads</h2>
     <form action="/managers/{{manager.id}}/squads" method="get">
       <input type="submit" value="Create a new squad">
     </form>
-    <form action="/managers/{{manager.id}}" method="post">
-        <input type="submit" value="Update Manager Name">
-      </form>
-  
+    <h2>Players</h2>
+    <form action="/managers/{{manager.id}}/players" method="get">
+      <input type="submit" value="Add a player">
+    </form>
+    <!-- To have a delete button with a post request, we need a form -->
+    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
+
+
+
     <!-- This is a link to another page. -->
     <!-- The browser will send `GET /books/new` when the user clicks this -->
-    <a href="/home">Back to home</a>
+    <a href="/managers/{{manager.id}}">Back to manager home</a>
   </body>
 </html>

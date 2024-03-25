@@ -17,12 +17,13 @@ class PlayerRepository:
         row = rows[0]
         return Player(row["id"], row["player_name"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
 
-    def create(self, player):
+    def create(self, player, manager_id):
         rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
         row = rows[0]
         print(row)
         player.id = row["id"]
         print(player)
+        self._connection.execute('INSERT INTO managers_players (manager_id, player_id) VALUES (%s, %s)', [manager_id, player.id])
         print(player.id)
         return player
     

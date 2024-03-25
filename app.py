@@ -94,7 +94,7 @@ def create_player(manager_id):
         player = Player(None, player_name, player_position)
         if not player.is_valid():
             return render_template('players/new.html', manager=manager, errors=player.generate_errors()), 400
-        player_repository.create(player)
+        player_repository.create(player, manager_id)
         return redirect(f"/managers/{manager.id}/players/")
     else:
         players = player_repository.all()
