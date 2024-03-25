@@ -1,25 +1,105 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, redirect, render_template
 from lib.database_connection import get_flask_database_connection
+from lib.manager_repository import ManagerRepository
+from lib.manager import Manager
+from lib.squad_repository import SquadRepository
+from lib.squad import Squad
+from lib.player_repository import PlayerRepository
+from lib.player import Player
 
 # Create a new Flask app
 app = Flask(__name__)
 
-# == Your Routes Here ==
+# DISPLAY HOME PAGE
+@app.route('/home', methods=['GET'])
+def welcome():
+    return render_template('home.html')
+
+# DIPLAY MANAGER CREATION PAGE // CREATE MANAGER
+@app.route('/managers', methods=["GET", 'POST'])
+def create_manager():
+    connection = get_flask_database_connection(app)
+    repository = ManagerRepository(connection)
+    if request.method == 'POST':
+        manager_name = request.form['manager_name']
+        manager_email = request.form['manager_email']
+        manager = Manager(None, manager_name, manager_email)
+        if not manager.is_valid():
+            return render_template('managers/new.html', manager=manager, errors=manager.generate_errors()), 400
+        manager = repository.create(manager)
+        return redirect(f"/managers/{manager.id}")
+    else:
+        return render_template('managers/new.html')
+
+# DISPLAY A SINGLE MANAGER PAGE
+@app.route('/managers/<int:id>', methods=['GET', 'POST'])
+def get_manager(id):
+    connection = get_flask_database_connection(app)
+    repository = ManagerRepository(connection)
+    manager = repository.find(id)
+    if request.method == 'POST':   
+        if manager is None:
+            abort(404)
+            return render_template('managers/edit.html', manager=manager)    
+    return render_template('managers/show.html', manager=manager)
+
+#  DISPLAY SQUAD CREATION PAGE // CREATE SQUAD
+@app.route('/managers/<int:id>/squads', methods=['GET', 'POST'])
+def create_squad(id):
+    connection = get_flask_database_connection(app)
+    manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)
+    manager = manager_repository.find(id)
+    if manager is None:
+        return "Manager not found", 404
+    if request.method == 'POST':
+        squad_name = request.form['squad_name']
+        squad = Squad(None, squad_name)
+        if not squad.is_valid():
+            return render_template('squads/new.html', manager=manager, errors=squad.generate_errors()), 400
+        squad_repository.create(squad)
+        return redirect(f"/managers/{manager.id}/squads/{squad.id}")
+    return render_template('squads/new.html', manager=manager)
+
+# DISPLAY A SINGLE SQUAD PAGE
+@app.route('/managers/<int:manager_id>/squads/<int:squad_id>', methods=['GET', 'POST'])
+def get_squad(manager_id, squad_id):
+    connection = get_flask_database_connection(app)
+    manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)   
+    manager = manager_repository.find(manager_id)
+    squad = squad_repository.find(squad_id)
+
+    if request.method == 'POST':   
+        if manager is None:
+            abort(404)
+            return render_template('managers/edit.html', manager=manager)    
+
+    return render_template('squads/show.html', manager=manager, squad=squad)
 
 
-# == Example Code Below ==
+# DISPLAY PLAYER CREATION PAGE // CREATE PLAYER
+@app.route('/managers/<int:manager_id>/players/', methods=['GET', 'POST'])
+def create_player(manager_id):
+    connection = get_flask_database_connection(app)
+    manager_repository = ManagerRepository(connection)
+    player_repository = PlayerRepository(connection)
+    manager = manager_repository.find(manager_id)
+    if manager is None:
+        return "Manager not found", 404
+    if request.method == 'POST':
+        player_name = request.form['player_name']
+        player_position = request.form['player_position']
+        player = Player(None, player_name, player_position)
+        if not player.is_valid():
+            return render_template('players/new.html', manager=manager, errors=player.generate_errors()), 400
+        player_repository.create(player)
+        return redirect(f"/managers/{manager.id}/players/")
+    else:
+        players = player_repository.all()
+        return render_template('players/new.html', manager=manager, players=players)
 
-# GET /emoji
-# Returns a smiley face in HTML
-# Try it:
-#   ; open http://localhost:5001/emoji
-@app.route('/emoji', methods=['GET'])
-def get_emoji():
-    # We use `render_template` to send the user the file `emoji.html`
-    # But first, it gets processed to look for placeholders like {{ emoji }}
-    # These placeholders are replaced with the values we pass in as arguments
-    return render_template('emoji.html', emoji=':)')
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.

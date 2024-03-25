@@ -1,4 +1,4 @@
--- -- Drop existing tables and types
+-- -- -- Drop existing tables and types
 -- DROP TABLE IF EXISTS game_result CASCADE;
 -- DROP TABLE IF EXISTS game_week CASCADE;
 -- DROP TABLE IF EXISTS manager_squad CASCADE;
@@ -57,14 +57,14 @@ CREATE TABLE players (
 );
 
 CREATE TABLE managers_squads (
-    manager_id INTEGER REFERENCES manager(id),
-    squad_id INTEGER REFERENCES squad(id),
+    manager_id INTEGER REFERENCES managers(id),
+    squad_id INTEGER REFERENCES squads(id),
     PRIMARY KEY (manager_id, squad_id)
 );
 
 CREATE TABLE managers_players (
-    manager_id INTEGER REFERENCES manager(id),
-    player_id INTEGER REFERENCES player(id),
+    manager_id INTEGER REFERENCES managers(id),
+    player_id INTEGER REFERENCES players(id),
     PRIMARY KEY (manager_id, player_id)
 );
 
@@ -79,7 +79,7 @@ CREATE TABLE seasons (
     id SERIAL PRIMARY KEY,
     season_start_date DATE,
     season_length INTEGER,
-    squad_id INTEGER REFERENCES squad(id)
+    squad_id INTEGER REFERENCES squads(id)
 );
 
 -- Create game_week table
@@ -87,7 +87,7 @@ CREATE TABLE game_weeks (
     id SERIAL PRIMARY KEY,
     week_number INTEGER,
     spots_full BOOLEAN DEFAULT FALSE,
-    season_id INTEGER REFERENCES season(id)
+    season_id INTEGER REFERENCES seasons(id)
 );
 
 -- Create game_result table

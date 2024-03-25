@@ -12,8 +12,8 @@ class ManagerRepository:
             managers.append(manager)
         return managers
     
-    def find(self, manager_id):
-        rows = self._connection.execute('SELECT * FROM managers WHERE id = %s', [manager_id])
+    def find(self, id):
+        rows = self._connection.execute('SELECT * FROM managers WHERE id = %s', [id])
         row = rows[0]
         return Manager(row["id"], row["manager_name"], row["manager_email"])
 
@@ -23,6 +23,6 @@ class ManagerRepository:
         manager.id = row["id"]
         return manager
     
-    def delete(self, manager_id):
-        rows = self._connection.execute('DELETE FROM managers WHERE id = %s', [manager_id])
+    def delete(self, id):
+        rows = self._connection.execute('DELETE FROM managers WHERE id = %s', [id])
         return None

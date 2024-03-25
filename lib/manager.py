@@ -2,7 +2,8 @@ from lib.squad import Squad
 from lib.player import Player
 
 class Manager:
-    def __init__(self, manager_name, manager_email):
+    def __init__(self, id, manager_name, manager_email):
+        self.id = id
         self.manager_name = manager_name
         self.manager_email = manager_email
         self.squads = []
@@ -12,9 +13,11 @@ class Manager:
         return self.__dict__ == other.__dict__
     
     def __repr__(self) -> str:
-        return f"Manager({self.manager_name}, {self.manager_email})"    
+        return f"Manager({self.id}, {self.manager_name}, {self.manager_email})"    
    
     def is_valid(self):
+        # if self.id == None or self.id == "":
+        #     return False
         if self.manager_name == None or self.manager_name == "":
             return False
         if self.manager_email == None or self.manager_email == "":

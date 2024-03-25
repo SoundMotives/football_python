@@ -1,7 +1,8 @@
 from .season import Season
 
 class Squad:
-    def __init__(self, squad_name):
+    def __init__(self, id, squad_name):
+        self.id = id
         self.squad_name = squad_name
         self.players = []
         self.seasons = []
@@ -10,7 +11,14 @@ class Squad:
         return self.__dict__ == other.__dict__
     
     def __repr__(self) -> str:
-        return f"Squad({self.squad_name}, {self.players}, {self.seasons})"    
+        return f"Squad({self.id}, {self.squad_name}, {self.players}, {self.seasons})"    
+
+    def is_valid(self):
+        # if self.id == None or self.id == "":
+        #     return False
+        if self.squad_name == None or self.squad_name == "":
+            return False
+        return True
 
     def add_player(self, player):
         self.players.append(player)
@@ -19,3 +27,5 @@ class Squad:
         season = Season(season_number)
         self.seasons.append(season)
         return season
+
+

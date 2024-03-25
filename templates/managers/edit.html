@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Manager Page</title>
+    <title>Manager Page </title>
     <meta charset="utf-8">
   </head>
   <body>
-    <h1>Manager Page</h1>
+    <h1>Manager Page - THIS WILL BE TO EDIT</h1>
     <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
     <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
 
     <!-- To have a delete button with a post request, we need a form -->
     <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
-    <form action="/books/{{book.id}}/delete" method="post">
-      <input type="submit" value="Delete Book">
+    <form action="/managers/{{manager.id}}/squad" method="post">
+      <input type="submit" value="Create a new squad">
     </form>
 
     <!-- This is a link to another page. -->
     <!-- The browser will send `GET /books/new` when the user clicks this -->
-    <a href="/books">Back to all books</a>
+    <a href="/managers">Back to all managers</a>
   </body>
 </html>

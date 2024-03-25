@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Football Manager</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Welcome to Football Manager</h1>
+    <h3>Set yourself up as a manager to create your own squad!</h3>
+    <form action="/managers" method="post">
+      <!-- We check to see if there are any errors from a previous submission -->
+      {% if errors %}
+      <!-- If so, we show them. -->
+      <p class="t-errors">
+        There were errors with your submission: {{ errors }}
+      </p>
+      {% endif %}
+
+      <p>
+        <!-- These `label` tags are important for accessibility -->
+        <label for="manager_name">Manager Name</label>
+
+        <!-- The `type` attribute says what kind of field this is -->
+        <!-- The `name` attribute says what parameter name should be sent to the server -->
+        <!-- The `id` field here is used to link it to the `for` tag in the label -->
+        <input type="text" name="manager_name" id="manager_name" />
+      </p>
+      <p>
+        <label for="manager_email">Manager Email</label>
+        <input type="text" name="manager_email" id="manager_email" />
+      </p>
+      <p>
+        <!-- `type` is submit here, to indicate it is a button -->
+        <!-- `value` is used as the button's text -->
+        <input type="submit" value="Create Manager" />
+      </p>
+    </form>
+  </body>
+</html>

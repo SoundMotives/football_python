@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Football Manager</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Hello {{manager.manager_name}}</h1>
+    <h2>List of existing players</h2>
+    <ul>
+    {% for player in players %}
+    <li>
+      <!-- We can use {{ placeholders }} in HTML attributes too -->
+      <a href="/players/{{player.id}}">{{player.player_name}} - {{player.player_position}}</a>
+    </li>
+  {% endfor %}
+  </ul>
+
+    <h2>Add a player!</h2>
+    <form action="/managers/{{manager.id}}/players" method="post">
+      <!-- We check to see if there are any errors from a previous submission -->
+      {% if errors %}
+      <!-- If so, we show them. -->
+      <p class="t-errors">
+        There were errors with your submission: {{ errors }}
+      </p>
+      {% endif %}
+
+      <p>
+        <!-- These `label` tags are important for accessibility -->
+        <label for="player_name">Player Name</label>
+        <input type="text" name="player_name" id="player_name" />
+        <label for="player_position">Player Position</label>
+        <input type="text" name="player_position" id="player_position" />
+      </p>
+      <p>
+        <!-- `type` is submit here, to indicate it is a button -->
+        <!-- `value` is used as the button's text -->
+        <input type="submit" value="Add player" />
+      </p>
+    </form>
+    <a href="/home">Back to home</a>
+  </body>
+</html>

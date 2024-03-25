@@ -11,12 +11,15 @@
 
     <!-- To have a delete button with a post request, we need a form -->
     <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
-    <form action="/books/{{book.id}}/delete" method="post">
-      <input type="submit" value="Delete Book">
+    <form action="/managers/{{manager.id}}/squads" method="get">
+      <input type="submit" value="Create a new squad">
     </form>
-
+    <form action="/managers/{{manager.id}}" method="post">
+        <input type="submit" value="Update Manager Name">
+      </form>
+  
     <!-- This is a link to another page. -->
     <!-- The browser will send `GET /books/new` when the user clicks this -->
-    <a href="/books">Back to all books</a>
+    <a href="/home">Back to home</a>
   </body>
 </html>

@@ -6,14 +6,14 @@ class GameWeek:
     def __init__(self, week_number) -> None:
         self.week_number = week_number
         self.available_players =  []
-        self.spots_full = False
+        self.availability_full = False
         self.black_team_list = []
         self.white_team_list = []
         self.game_result = None
         # self.final_score = {self.black_team: None, self.white_team: None}
 
     def __repr__(self) -> str:  
-        return f"GameWeek({self.week_number}, \nAvailable_players={self.available_players}, \nSpots_full={self.spots_full}, \nBlack_team={self.black_team_list}, \nWhite_team={self.white_team_list})"      
+        return f"GameWeek({self.week_number}, \nAvailable_players={self.available_players}, \navailability_full={self.availability_full}, \nBlack_team={self.black_team_list}, \nWhite_team={self.white_team_list})"      
     
     def ask_availability(self, squad):
         for player in squad.players:

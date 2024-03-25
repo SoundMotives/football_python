@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Squad Page</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>Football Manager</h1>
+    <h2>Manager Details</h2>
+    <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
+    <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
+    <h2>Squad Details</h2>
+    <p class="t-squad-name">Squad Name: {{squad.squad_name}}</p>
+
+
+    <!-- To have a delete button with a post request, we need a form -->
+    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
+    <form action="/managers/{{manager.id}}/players" method="get">
+      <input type="submit" value="Create a new player">
+    </form>
+    <form action="/managers/{{manager.id}}/squads/{{squad.id}}/seasons" method="post">
+      <input type="submit" value="Create a new season">
+    </form>
+    <form action="/managers/{{manager.id}}/players" method="post">
+        <input type="submit" value="Update Manager Name">
+      </form>
+  
+    <!-- This is a link to another page. -->
+    <!-- The browser will send `GET /books/new` when the user clicks this -->
+    <a href="/home">Back to home</a>
+  </body>
+</html>
