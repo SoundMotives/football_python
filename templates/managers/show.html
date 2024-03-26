@@ -14,10 +14,29 @@
     </form>
 
     <h2>Squads</h2>
+    <ul>
+      {% for squad in squads %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a href="//managers/{{manager.id}}/squads/{{squad.id}}">{{squad.squad_name}}</a>
+      </li>
+    {% endfor %}
+    </ul>
+
     <form action="/managers/{{manager.id}}/squads" method="get">
       <input type="submit" value="Create a new squad">
     </form>
+    <h2>Seasons</h2>
+
     <h2>Players</h2>
+    <ul>
+      {% for player in players %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a href="//managers/{{manager.id}}/players/{{player.id}}">{{player.player_name}} - {{player.player_position}}</a>
+      </li>
+    {% endfor %}
+    </ul>
     <form action="/managers/{{manager.id}}/players" method="get">
       <input type="submit" value="Add a player">
     </form>

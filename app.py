@@ -7,6 +7,8 @@ from lib.squad_repository import SquadRepository
 from lib.squad import Squad
 from lib.player_repository import PlayerRepository
 from lib.player import Player
+# from lib.season_repository import SeasonRepository
+from lib.season import Season
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -14,9 +16,9 @@ app = Flask(__name__)
 # DISPLAY HOME PAGE
 @app.route('/home', methods=['GET'])
 def welcome():
-    return render_template('home.html')
+    return render_template('landing_page.html')
 
-# DIPLAY MANAGER CREATION PAGE // CREATE MANAGER
+# DISPLAY MANAGER CREATION PAGE // CREATE MANAGER
 @app.route('/managers', methods=["GET", 'POST'])
 def create_manager():
     connection = get_flask_database_connection(app)
@@ -36,13 +38,18 @@ def create_manager():
 @app.route('/managers/<int:id>', methods=['GET', 'POST'])
 def get_manager(id):
     connection = get_flask_database_connection(app)
-    repository = ManagerRepository(connection)
-    manager = repository.find(id)
+    manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)
+    player_repository = PlayerRepository(connection)
+    manager = manager_repository.find(id)
     if request.method == 'POST':   
         if manager is None:
             abort(404)
-            return render_template('managers/edit.html', manager=manager)    
-    return render_template('managers/show.html', manager=manager)
+            return render_template('managers/edit.html', manager=manager)
+    # finding squds that match manager
+    squads = squad_repository.find_manager_squads(id)
+    players = player_repository.find_manager_players(id)    
+    return render_template('managers/show.html', manager=manager, squads=squads, players=players)
 
 #  DISPLAY SQUAD CREATION PAGE // CREATE SQUAD
 @app.route('/managers/<int:id>/squads', methods=['GET', 'POST'])
@@ -51,6 +58,7 @@ def create_squad(id):
     manager_repository = ManagerRepository(connection)
     squad_repository = SquadRepository(connection)
     manager = manager_repository.find(id)
+    manager_id = manager.id
     if manager is None:
         return "Manager not found", 404
     if request.method == 'POST':
@@ -58,8 +66,8 @@ def create_squad(id):
         squad = Squad(None, squad_name)
         if not squad.is_valid():
             return render_template('squads/new.html', manager=manager, errors=squad.generate_errors()), 400
-        squad_repository.create(squad)
-        return redirect(f"/managers/{manager.id}/squads/{squad.id}")
+        squad_repository.create(squad, manager_id)
+        return redirect(f"/managers/{manager.id}")
     return render_template('squads/new.html', manager=manager)
 
 # DISPLAY A SINGLE SQUAD PAGE
