@@ -32,7 +32,7 @@ class SeasonRepository:
     def create(self, season, squad_id):
         rows = self._connection.execute('INSERT INTO seasons (season_start_date, season_length, squad_id) VALUES (%s, %s, %s) RETURNING id',[season.season_start_date, season.season_length, squad_id])
         row = rows[0]
-        season.id = row["id"]
+        season.id = row["id"]       
         return season
     
     def delete(self, id):

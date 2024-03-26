@@ -9,9 +9,9 @@
     <h2>Manager Details</h2>
     <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
     <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
-    <form action="/managers/{{manager.id}}" method="post">
+    <!-- <form action="/managers/{{manager.id}}" method="post">
       <input type="submit" value="Update Manager Name" />
-    </form>
+    </form> -->
 
     <h2>Squads</h2>
     <ul>
@@ -28,7 +28,7 @@
     <form action="/managers/{{manager.id}}/squads" method="get">
       <input type="submit" value="Create a new squad" />
     </form>
-    <h2>Seasons</h2>
+    <h2>Active Seasons</h2>
 
     <h2>Players</h2>
     <ul>

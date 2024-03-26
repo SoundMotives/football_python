@@ -88,7 +88,8 @@ CREATE TABLE seasons (
 CREATE TABLE game_weeks (
     id SERIAL PRIMARY KEY,
     week_number INTEGER,
-    spots_full BOOLEAN DEFAULT FALSE,
+    game_week_date DATE,
+    availability_full BOOLEAN DEFAULT FALSE,
     season_id INTEGER REFERENCES seasons(id)
 );
 
@@ -158,31 +159,31 @@ INSERT INTO seasons (id, season_start_date, season_length, game_weeks, squad_id)
     (2,'2024-04-07', 12, ARRAY[]::INTEGER[], 2);
 
 -- Insert data into game_week table
-INSERT INTO game_weeks (week_number, season_id) VALUES
-    (1, 1),
-    (2, 1),
-    (3, 1),
-    (4, 1),
-    (5, 1),
-    (6, 1),
-    (7, 1),
-    (8, 1),
-    (9, 1),
-    (10, 1),
-    (11, 1),
-    (12, 1),
-    (1, 2),
-    (2, 2),
-    (3, 2),
-    (4, 2),
-    (5, 2),
-    (6, 2),
-    (7, 2),
-    (8, 2),
-    (9, 2),
-    (10, 2),
-    (11, 2),
-    (12, 2);
+INSERT INTO game_weeks (week_number, game_week_date, season_id) VALUES
+    (1, '2024-03-25', 1),
+    (2, '2024-03-25', 1),
+    (3, '2024-03-25', 1),
+    (4, '2024-03-25', 1),
+    (5, '2024-03-25', 1),
+    (6, '2024-03-25', 1),
+    (7, '2024-03-25', 1),
+    (8, '2024-03-25', 1),
+    (9, '2024-03-25', 1),
+    (10,'2024-03-25', 1),
+    (11,'2024-03-25', 1),
+    (12,'2024-03-25', 1),
+    (1, '2024-03-25', 2),
+    (2, '2024-03-25', 2),
+    (3, '2024-03-25', 2),
+    (4, '2024-03-25', 2),
+    (5, '2024-03-25', 2),
+    (6, '2024-03-25', 2),
+    (7, '2024-03-25', 2),
+    (8, '2024-03-25', 2),
+    (9, '2024-03-25', 2),
+    (10, '2024-03-25', 2),
+    (11, '2024-03-25', 2),
+    (12, '2024-03-25', 2);
 
 -- INSERT INTO game_result (week_number, season_id) VALUES
 

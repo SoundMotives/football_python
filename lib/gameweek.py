@@ -3,8 +3,10 @@ from lib.player import Player
 from lib.gameresult import GameResult
 
 class GameWeek:
-    def __init__(self, week_number) -> None:
+    def __init__(self, week_number, id=None, game_week_date=None, availability_full=False, black_team_list=[], white_team_list=[]) -> None:
+        self.id = id
         self.week_number = week_number
+        self.game_week_date = game_week_date
         self.available_players =  []
         self.availability_full = False
         self.black_team_list = []
@@ -13,8 +15,26 @@ class GameWeek:
         # self.final_score = {self.black_team: None, self.white_team: None}
 
     def __repr__(self) -> str:  
-        return f"GameWeek({self.week_number}, \nAvailable_players={self.available_players}, \navailability_full={self.availability_full}, \nBlack_team={self.black_team_list}, \nWhite_team={self.white_team_list})"      
+        return f"GameWeek({self.week_number}, Available_players={self.available_players}, availability_full={self.availability_full}, Black_team={self.black_team_list}, White_team={self.white_team_list})"      
     
+    def is_valid(self):
+        # if self.id == None or self.id == "":
+        #     return False
+        if self.week_number == None or self.week_number == "":
+            return False
+        return True
+
+    def generate_errors(self):
+        errors = []
+        # if self.id == None or self.id == "":
+        #     errors.append("ID can't be blank")
+        if self.week_number == None or self.week_number == "":
+            errors.append("Week number can't be blank")
+        if len(errors) == 0:
+            return None
+        else:
+            return ", ".join(errors)
+
     def ask_availability(self, squad):
         for player in squad.players:
             availability = input(f"Is {player.player_name} available for GameWeek {self.week_number}? (yes/no): ").lower()

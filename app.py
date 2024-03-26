@@ -9,6 +9,8 @@ from lib.player_repository import PlayerRepository
 from lib.player import Player
 from lib.season_repository import SeasonRepository
 from lib.season import Season
+from lib.gameweek_repository import GameWeekRepository
+from lib.gameweek import GameWeek
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -102,7 +104,8 @@ def create_player(manager_id):
         player_position = request.form['player_position']
         player = Player(None, player_name, player_position)
         if not player.is_valid():
-            return render_template('players/new.html', manager=manager, errors=player.generate_errors()), 400
+            players = player_repository.all()
+            return render_template('players/new.html', manager=manager, players=players, errors=player.generate_errors()), 400
         player_repository.create(player, manager_id)
         return redirect(f"/managers/{manager.id}/players/")
     else:
@@ -118,6 +121,7 @@ def create_season(manager_id, squad_id):
     manager_repository = ManagerRepository(connection)
     squad_repository = SquadRepository(connection)
     season_repository = SeasonRepository(connection)
+    gameweek_repository = GameWeekRepository(connection)
     manager = manager_repository.find(manager_id)
     # manager_id = manager.id
     if manager is None:
@@ -135,8 +139,29 @@ def create_season(manager_id, squad_id):
         if not season.is_valid():
             return render_template('seasons/new.html', manager=manager, squad=squad, errors=season.generate_errors()), 400
         season_repository.create(season, squad_id)
+        gameweek_repository.create_gameweeks_for_season(season)
         return redirect(f"/managers/{manager_id}/squads/{squad_id}")
     return render_template('seasons/new.html', manager=manager, squad=squad)
+
+
+
+# DISPLAY A SINGLE SEASON PAGE
+@app.route('/managers/<int:manager_id>/squads/<int:squad_id>/seasons/<int:season_id>', methods=['GET', 'POST'])
+def get_season(manager_id, squad_id, season_id):
+    connection = get_flask_database_connection(app)
+    manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)   
+    season_repository = SeasonRepository(connection)
+    gameweek_repository = GameWeekRepository(connection)
+    manager = manager_repository.find(manager_id)
+    squad = squad_repository.find(squad_id)
+    season = season_repository.find(season_id)
+    if request.method == 'POST':   
+        if manager is None:
+            abort(404)
+            return render_template('managers/edit.html', manager=manager)
+    gameweeks = gameweek_repository.all_season_gameweeks(season_id)    
+    return render_template('seasons/show.html', manager=manager, squad=squad, season=season, gameweeks=gameweeks)
 
 
 # This imports some more example routes for you to see how they work

@@ -40,7 +40,7 @@ class Season:
             self.game_weeks.append(game_week)
 
     def check_season_completion(self):
-        completed_game_weeks = sum(1 for game_week in self.game_weeks if game_week.spots_full)
-        if completed_game_weeks >= 12:  # Assuming each game week has spots_full attribute
+        completed_game_weeks = sum(1 for game_week in self.game_weeks if game_week.availability_full)
+        if completed_game_weeks >= 12:  # Assuming each game week has availability_full attribute
             self.season_complete = True
             print("Season complete!")
