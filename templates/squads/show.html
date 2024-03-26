@@ -15,11 +15,20 @@
 
     <!-- To have a delete button with a post request, we need a form -->
     <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
-      <h2>Squads</h2>
-      <form action="/managers/{{manager.id}}/squads" method="get">
-        <input type="submit" value="Create a new squad">
-      </form>
       <h2>Seasons</h2>
+
+      <ul>
+        {% for season in seasons %}
+        <li>
+          <!-- We can use {{ placeholders }} in HTML attributes too -->
+          <a href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}/seasons/{{season.id}}"
+            >Season Start: {{season.season_start_date}} - Season Length {{season.season_length}} - Click to manage seasons</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+  
+
       <form action="/managers/{{manager.id}}/squads/{{squad.id}}/seasons" method="get">
         <input type="submit" value="Create a new season">
       </form>

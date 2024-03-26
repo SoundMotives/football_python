@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>Manager Page</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
   </head>
   <body>
     <h1>Manager Page</h1>
@@ -10,7 +10,7 @@
     <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
     <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
     <form action="/managers/{{manager.id}}" method="post">
-      <input type="submit" value="Update Manager Name">
+      <input type="submit" value="Update Manager Name" />
     </form>
 
     <h2>Squads</h2>
@@ -18,13 +18,15 @@
       {% for squad in squads %}
       <li>
         <!-- We can use {{ placeholders }} in HTML attributes too -->
-        <a href="//managers/{{manager.id}}/squads/{{squad.id}}">{{squad.squad_name}}</a>
+        <a href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}"
+          >{{squad.squad_name}} - Click to manage seasons</a
+        >
       </li>
-    {% endfor %}
+      {% endfor %}
     </ul>
 
     <form action="/managers/{{manager.id}}/squads" method="get">
-      <input type="submit" value="Create a new squad">
+      <input type="submit" value="Create a new squad" />
     </form>
     <h2>Seasons</h2>
 
@@ -33,17 +35,17 @@
       {% for player in players %}
       <li>
         <!-- We can use {{ placeholders }} in HTML attributes too -->
-        <a href="//managers/{{manager.id}}/players/{{player.id}}">{{player.player_name}} - {{player.player_position}}</a>
+        <a href="//managers/{{manager.id}}/players/{{player.id}}"
+          >{{player.player_name}} - {{player.player_position}}</a
+        >
       </li>
-    {% endfor %}
+      {% endfor %}
     </ul>
     <form action="/managers/{{manager.id}}/players" method="get">
-      <input type="submit" value="Add a player">
+      <input type="submit" value="Add a player" />
     </form>
     <!-- To have a delete button with a post request, we need a form -->
     <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
-
-
 
     <!-- This is a link to another page. -->
     <!-- The browser will send `GET /books/new` when the user clicks this -->

@@ -79,6 +79,8 @@ CREATE TABLE seasons (
     id SERIAL PRIMARY KEY,
     season_start_date DATE,
     season_length INTEGER,
+    game_weeks INTEGER[],
+    season_complete BOOLEAN DEFAULT FALSE,
     squad_id INTEGER REFERENCES squads(id)
 );
 
@@ -97,7 +99,7 @@ CREATE TABLE game_results (
     white_team_list INTEGER[],
     final_score JSONB,
     winning_team VARCHAR(50),
-    game_week_id INTEGER REFERENCES game_week(id)
+    game_week_id INTEGER REFERENCES game_weeks(id)
 );
 
 -- Insert data into manager table
@@ -151,9 +153,9 @@ INSERT INTO managers_players(manager_id, player_id) VALUES
     (1, 15);
 
 -- Insert data into season table
-INSERT INTO seasons (id, season_start_date, season_length, squad_id) VALUES
-    (1,'2024-04-01', 12, 1),
-    (2,'2024-04-07', 12, 2);
+INSERT INTO seasons (id, season_start_date, season_length, game_weeks, squad_id) VALUES
+    (1,'2024-04-01', 12, ARRAY[]::INTEGER[], 1),
+    (2,'2024-04-07', 12, ARRAY[]::INTEGER[], 2);
 
 -- Insert data into game_week table
 INSERT INTO game_weeks (week_number, season_id) VALUES
