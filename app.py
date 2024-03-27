@@ -11,9 +11,12 @@ from lib.season_repository import SeasonRepository
 from lib.season import Season
 from lib.gameweek_repository import GameWeekRepository
 from lib.gameweek import GameWeek
+from datetime import datetime
 
 # Create a new Flask app
 app = Flask(__name__)
+
+
 
 # DISPLAY HOME PAGE
 @app.route('/home', methods=['GET'])
@@ -23,6 +26,7 @@ def welcome():
 # DISPLAY MANAGER CREATION PAGE // CREATE MANAGER
 @app.route('/managers', methods=["GET", 'POST'])
 def create_manager():
+
     connection = get_flask_database_connection(app)
     repository = ManagerRepository(connection)
     if request.method == 'POST':
@@ -39,6 +43,9 @@ def create_manager():
 # DISPLAY MAIN MANAGER PAGE
 @app.route('/managers/<int:id>', methods=['GET', 'POST'])
 def get_manager(id):
+    today_date = datetime.now()
+   # Format the datetime object
+    today_date_formatted = today_date.strftime('%Y-%m-%d')
     connection = get_flask_database_connection(app)
     manager_repository = ManagerRepository(connection)
     squad_repository = SquadRepository(connection)
@@ -48,8 +55,9 @@ def get_manager(id):
     squads = squad_repository.all_manager_squads(id)
     print(f"These are the squads: {squads}")
     seasons = season_repository.multiple_squads_all_seasons(squads)
+    print(f"These are the seasons: {seasons}")
     players = player_repository.find_manager_players(id)    
-    return render_template('managers/show.html', manager=manager, squads=squads, players=players, seasons=seasons)
+    return render_template('managers/show.html', manager=manager, squads=squads, players=players, seasons=seasons, today_date_formatted=today_date_formatted)
 
 #  DISPLAY SQUAD CREATION PAGE // CREATE SQUAD
 @app.route('/managers/<int:id>/squads', methods=['GET', 'POST'])
@@ -90,7 +98,7 @@ def get_squad(manager_id, squad_id):
     return render_template('squads/show.html', manager=manager, squad=squad, players=players, seasons=seasons)
 
 
-# DISPLAY PLAYER CREATION PAGE // CREATE PLAYER
+# DISPLAY PLAYERS CREATION PAGE // CREATE PLAYERS
 @app.route('/managers/<int:manager_id>/players/', methods=['GET', 'POST'])
 def create_player(manager_id):
     connection = get_flask_database_connection(app)
@@ -114,7 +122,19 @@ def create_player(manager_id):
         # players = player_repository.all()
         return render_template('players/new.html', manager=manager, players=players)
 
-
+# DISPLAY INDIVIDUAL PLAYER PAGE
+@app.route('/managers/<int:manager_id>/players/<int:player_id>', methods=['GET'])
+def get_player(manager_id, player_id):
+    connection = get_flask_database_connection(app)
+    player_repository = PlayerRepository(connection)
+    manager_repository = ManagerRepository(connection)
+    manager = manager_repository.find(manager_id)
+    if manager is None:
+        return "Manager not found", 404
+    player = player_repository.find(player_id)
+    if player is None:
+        return "Player not found", 404
+    return render_template('player/show.html', player=player, manager=manager)
 
 #  DISPLAY SEASON CREATION PAGE // CREATE SEASON
 @app.route('/managers/<int:manager_id>/squads/<int:squad_id>/seasons', methods=['GET', 'POST'])

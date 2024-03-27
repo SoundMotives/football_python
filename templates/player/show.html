@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Player Page</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Player Page</h1>
+    <h2>Player Details</h2>
+    <p class="t-manager-name">Player Name: {{player.player_name}}</p>
+    <p class="t-manager-email">Player Position: {{player.player_position}}</p>
+    <!-- <form action="/managers/{{manager.id}}" method="post">
+      <input type="submit" value="Update Manager Name" />
+    </form> -->
+
+    <h2>Player Performance</h2>
+    <p>Points: {{player.player_points}}</p>
+    <p>Goals for: {{player.player_goals_for}}</p>
+    <p>Goals for: {{player.player_goals_against}}</p>
+
+    <a href="/managers/{{manager.id}}">Back to manager home</a>
+  </body>
+</html>
