@@ -108,7 +108,8 @@ def create_player_from_squad(manager_id, squad_id):
     squad_repository = SquadRepository(connection)
     season_repository = SeasonRepository(connection)
     player_repository = PlayerRepository(connection)
-    
+    print(f"manager ID is : {manager_id}")
+    print(f"squad ID is : {squad_id}")
     manager = manager_repository.find(manager_id)
     squad = squad_repository.find(squad_id)
     seasons = season_repository.single_squad_all_seasons(squad_id)
@@ -209,12 +210,13 @@ def get_season(manager_id, squad_id, season_id):
     manager = manager_repository.find(manager_id)
     squad = squad_repository.find(squad_id)
     season = season_repository.find(season_id)
+    players = squad_repository.get_squad_players(squad_id)
     if request.method == 'POST':   
         if manager is None:
             abort(404)
             return render_template('managers/edit.html', manager=manager)
     gameweeks = gameweek_repository.all_season_gameweeks(season_id)    
-    return render_template('seasons/show.html', manager=manager, squad=squad, season=season, gameweeks=gameweeks)
+    return render_template('seasons/show.html', manager=manager, squad=squad, season=season, players=players, gameweeks=gameweeks)
 
 # DISPLAY A SINGLE GAMEWEEK PAGE
 @app.route('/managers/<int:manager_id>/squads/<int:squad_id>/seasons/<int:season_id>/gameweeks/<int:gameweek_id>', methods=['GET', 'POST'])
@@ -224,6 +226,7 @@ def get_gameweek(manager_id, squad_id, season_id, gameweek_id):
     squad_repository = SquadRepository(connection)   
     season_repository = SeasonRepository(connection)
     gameweek_repository = GameWeekRepository(connection)
+    players = squad_repository.get_squad_players(squad_id)
     manager = manager_repository.find(manager_id)
     squad = squad_repository.find(squad_id)
     season = season_repository.find(season_id)
@@ -233,7 +236,7 @@ def get_gameweek(manager_id, squad_id, season_id, gameweek_id):
             abort(404)
             return render_template('managers/edit.html', manager=manager)
     gameweek = gameweek_repository.find(gameweek_id)    
-    return render_template('gameweeks/show.html', manager=manager, squad=squad, season=season, gameweek=gameweek)
+    return render_template('gameweeks/show.html', manager=manager, squad=squad, players=players, season=season, gameweek=gameweek)
 
 
 

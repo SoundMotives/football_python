@@ -28,6 +28,17 @@
         <input type="submit" value="Create a new season">
       </form> -->
       <h2>Players</h2>
+
+      {% for player in players %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a href="http://localhost:5001/managers/{{manager.id}}/players/{{player.id}}"
+          >Player Name: {{player.player_name}} - Position {{player.player_position}} - Click to manage player</a
+        >
+      </li>
+      {% endfor %}
+
+      
       <form action="/managers/{{manager.id}}/players" method="get">
         <input type="submit" value="Add a player">
       </form>

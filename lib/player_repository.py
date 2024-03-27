@@ -41,7 +41,7 @@ class PlayerRepository:
     
 # TODO This is behaving oddly!
 
-    def create_squad_player(self, player, manager_id, squad_id):
+    def create_squad_player(self, player, squad_id, manager_id):
         rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
         row = rows[0]
         player.id = row["id"]
