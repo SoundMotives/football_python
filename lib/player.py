@@ -1,8 +1,8 @@
 class Player:
-    def __init__(self, id, player_name, player_position, player_points=0, player_goals_for=0, player_goals_against=0):
+    def __init__(self, id=None, player_name="", player_position="",  player_points=0, player_goals_for=0, player_goals_against=0):
         self.id = id
-        self.player_name = player_name
-        self.player_position = player_position
+        self.player_name = player_name if player_name is not None else ""
+        self.player_position = player_position if player_position is not None else ""
         self.player_points = player_points
         self.player_goals_for = player_goals_for
         self.player_goals_against = player_goals_against

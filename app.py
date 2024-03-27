@@ -45,14 +45,11 @@ def get_manager(id):
     player_repository = PlayerRepository(connection)
     season_repository = SeasonRepository(connection)
     manager = manager_repository.find(id)
-    if request.method == 'POST':   
-        if manager is None:
-            abort(404)
-            return render_template('managers/edit.html', manager=manager)
-    # finding squds that match manager
     squads = squad_repository.all_manager_squads(id)
+    print(f"These are the squads: {squads}")
+    seasons = season_repository.multiple_squads_all_seasons(squads)
     players = player_repository.find_manager_players(id)    
-    return render_template('managers/show.html', manager=manager, squads=squads, players=players)
+    return render_template('managers/show.html', manager=manager, squads=squads, players=players, seasons=seasons)
 
 #  DISPLAY SQUAD CREATION PAGE // CREATE SQUAD
 @app.route('/managers/<int:id>/squads', methods=['GET', 'POST'])
@@ -70,7 +67,7 @@ def create_squad(id):
         if not squad.is_valid():
             return render_template('squads/new.html', manager=manager, errors=squad.generate_errors()), 400
         squad_repository.create(squad, manager_id)
-        return redirect(f"/managers/{manager.id}")
+        return redirect(f"/managers/{manager.id}/squads/{squad.id}")
     return render_template('squads/new.html', manager=manager)
 
 # DISPLAY A SINGLE SQUAD PAGE
@@ -80,11 +77,11 @@ def get_squad(manager_id, squad_id):
     manager_repository = ManagerRepository(connection)
     squad_repository = SquadRepository(connection)   
     season_repository = SeasonRepository(connection)
-    player_repository = PlayerRepository(connection)
     manager = manager_repository.find(manager_id)
     squad = squad_repository.find(squad_id)
+    seasons = season_repository.single_squad_all_seasons(squad_id)
     players = squad_repository.get_squad_players(squad_id)
-    seasons = season_repository.all_squad_seasons(squad_id)
+
 
     if request.method == 'POST':   
         if manager is None:
@@ -100,19 +97,21 @@ def create_player(manager_id):
     manager_repository = ManagerRepository(connection)
     player_repository = PlayerRepository(connection)
     manager = manager_repository.find(manager_id)
+    players = player_repository.all()
     if manager is None:
         return "Manager not found", 404
     if request.method == 'POST':
         player_name = request.form['player_name']
         player_position = request.form['player_position']
+        print("Player Name:", player_name)
+        print("Player Position:", player_position)
         player = Player(None, player_name, player_position)
         if not player.is_valid():
-            players = player_repository.all()
             return render_template('players/new.html', manager=manager, players=players, errors=player.generate_errors()), 400
         player_repository.create(player, manager_id)
         return redirect(f"/managers/{manager.id}/players/")
     else:
-        players = player_repository.all()
+        # players = player_repository.all()
         return render_template('players/new.html', manager=manager, players=players)
 
 
@@ -143,6 +142,7 @@ def create_season(manager_id, squad_id):
             return render_template('seasons/new.html', manager=manager, squad=squad, errors=season.generate_errors()), 400
         season_repository.create(season, squad_id)
         gameweek_repository.create_gameweeks_for_season(season)
+
         return redirect(f"/managers/{manager_id}/squads/{squad_id}")
     return render_template('seasons/new.html', manager=manager, squad=squad)
 

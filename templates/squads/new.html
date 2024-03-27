@@ -1,12 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Football Manager</title>
+    <title>Manager Page</title>
     <meta charset="utf-8" />
   </head>
   <body>
-    <h1>Hello {{manager.manager_name}}</h1>
-    <h3>Set up your squad!</h3>
+    <h1>Manager Page</h1>
+    <h2>Manager Details</h2>
+    <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
+    <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
+    <!-- <form action="/managers/{{manager.id}}" method="post">
+      <input type="submit" value="Update Manager Name" />
+    </form> -->
+
+    <h2>Squads</h2>
+    <ul>
+      {% for squad in squads %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a
+          href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}"
+          >{{squad.squad_name}} - Click to manage seasons</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+
     <form action="/managers/{{manager.id}}/squads" method="post">
       <!-- We check to see if there are any errors from a previous submission -->
       {% if errors %}
@@ -31,6 +50,45 @@
         <input type="submit" value="Create Squad" />
       </p>
     </form>
+
+    <h2>Seasons</h2>
+    <ul>
+      {% for squad in squads %} {% for season in squad.seasons %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a
+          href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}/seasons/{{season.id}}"
+          >Season Start: {{season.season_start_date}} - Season Length
+          {{season.season_length}} - Click to manage seasons</a
+        >
+      </li>
+      {% endfor %} {% endfor %}
+    </ul>
+
+    <h2>Players</h2>
+    <ul>
+      {% for player in players %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a href="//managers/{{manager.id}}/players/{{player.id}}"
+          >{{player.player_name}} - {{player.player_position}}</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+    <form action="/managers/{{manager.id}}/players" method="get">
+      <input type="submit" value="Add a player" />
+    </form>
+    <!-- To have a delete button with a post request, we need a form -->
+    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
+
+    <!-- This is a link to another page. -->
+    <!-- The browser will send `GET /books/new` when the user clicks this -->
     <a href="/managers/{{manager.id}}">Back to manager home</a>
   </body>
 </html>
+
+
+
+
+

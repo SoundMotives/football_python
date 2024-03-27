@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Football Manager</title>
-    <meta charset="utf-8" />
+    <title>Squad Page</title>
+    <meta charset="utf-8">
   </head>
   <body>
-    <h1>Hello {{manager.manager_name}}</h1>
-    <h2>Current squad: {{squad.squad_name}}</h2>
-    <h2>Add a season!</h2>
+    <h1>Football Manager</h1>
+    <h2>Manager Details</h2>
+    <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
+    <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
+    <h2>Squad</h2>
+    <p class="t-squad-name">Squad Name: {{squad.squad_name}}</p>
+
+
+    <!-- To have a delete button with a post request, we need a form -->
+    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
+      <h2>Seasons</h2>
+
+      <ul>
+        {% for season in seasons %}
+        <li>
+          <!-- We can use {{ placeholders }} in HTML attributes too -->
+          <a href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}/seasons/{{season.id}}"
+            >Season Start: {{season.season_start_date}} - Season Length {{season.season_length}} - Click to manage seasons</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+  
     <form action="/managers/{{manager.id}}/squads/{{squad.id}}/seasons" method="post">
       <!-- We check to see if there are any errors from a previous submission -->
       {% if errors %}
@@ -30,6 +50,24 @@
         <input type="submit" value="Add Season" />
       </p>
     </form>
+    
+      <h2>Players</h2>
+      {% for player in players %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a href="http://localhost:5001/managers/{{manager.id}}/players/{{player.id}}"
+          >Player Name: {{player.player_name}} - Position {{player.player_position}} - Click to manage player</a
+        >
+      </li>
+      {% endfor %}
+
+
+      <form action="/managers/{{manager.id}}/players" method="get">
+        <input type="submit" value="Add a player">
+      </form>
+    <!-- This is a link to another page. -->
+    <!-- The browser will send `GET /books/new` when the user clicks this -->
     <a href="/managers/{{manager.id}}">Back to manager home</a>
   </body>
 </html>
+
