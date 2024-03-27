@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Squad Page</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Football Manager</h1>
+    <h2>Manager Details</h2>
+    <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
+    <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
+    <h2>Squad: {{squad.squad_name}}</h2>
+
+    <!-- To have a delete button with a post request, we need a form -->
+    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
+    <h2>Seasons</h2>
+
+    <ol>
+      {% for season in seasons %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a
+          href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}/seasons/{{season.id}}"
+          >Season Start: {{season.season_start_date}} - Season Length
+          {{season.season_length}} - Click to manage seasons</a
+        >
+      </li>
+      {% endfor %}
+    </ol>
+
+    <form
+      action="/managers/{{manager.id}}/squads/{{squad.id}}/seasons"
+      method="get"
+    >
+      <input type="submit" value="Create a new season" />
+    </form>
+    <h2>Players</h2>
+    {% for player in players %}
+    <li>
+      <!-- We can use {{ placeholders }} in HTML attributes too -->
+      <a
+        href="http://localhost:5001/managers/{{manager.id}}/players/{{player.id}}"
+        >Player Name: {{player.player_name}} - Position
+        {{player.player_position}} - Click to manage player</a
+      >
+    </li>
+    {% endfor %}
+
+    <!-- <form action="/managers/{{manager.id}}/players" method="get">
+        <input type="submit" value="Add a player">
+      </form> -->
+
+    <h2>Add a player!</h2>
+    <form action="/managers/{{manager.id}}/squads/{{squad.id}}/players" method="post">
+      <!-- We check to see if there are any errors from a previous submission -->
+      {% if errors %}
+      <!-- If so, we show them. -->
+      <p class="t-errors">
+        There were errors with your submission: {{ errors }}
+      </p>
+      {% endif %}
+
+      <p>
+        <!-- These `label` tags are important for accessibility -->
+        <label for="player_name">Player Name</label>
+        <input type="text" name="player_name" id="player_name" />
+        <label for="player_position">Player Position</label>
+        <input type="text" name="player_position" id="player_position" />
+      </p>
+      <p>
+        <!-- `type` is submit here, to indicate it is a button -->
+        <!-- `value` is used as the button's text -->
+        <input type="submit" value="Add player" />
+      </p>
+    </form>
+
+    <!-- This is a link to another page. -->
+    <!-- The browser will send `GET /books/new` when the user clicks this -->
+    <a href="/managers/{{manager.id}}">Back to manager home</a>
+  </body>
+</html>

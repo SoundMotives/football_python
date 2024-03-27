@@ -81,6 +81,8 @@ def create_squad(id):
         return redirect(f"/managers/{manager.id}/squads/{squad.id}")
     return render_template('squads/new.html', manager=manager)
 
+
+
 # DISPLAY A SINGLE SQUAD PAGE
 @app.route('/managers/<int:manager_id>/squads/<int:squad_id>', methods=['GET', 'POST'])
 def get_squad(manager_id, squad_id):
@@ -92,13 +94,38 @@ def get_squad(manager_id, squad_id):
     squad = squad_repository.find(squad_id)
     seasons = season_repository.single_squad_all_seasons(squad_id)
     players = squad_repository.get_squad_players(squad_id)
-
-
     if request.method == 'POST':   
         if manager is None:
             abort(404)
             return render_template('managers/edit.html', manager=manager)    
     return render_template('squads/show.html', manager=manager, squad=squad, players=players, seasons=seasons)
+
+# DISPLAY PLAYER CREATION FROM SQUAD PAGE
+@app.route('/managers/<int:manager_id>/squads/<int:squad_id>/players', methods=['GET', 'POST'])
+def create_player_from_squad(manager_id, squad_id):
+    connection = get_flask_database_connection(app)
+    manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)
+    season_repository = SeasonRepository(connection)
+    player_repository = PlayerRepository(connection)
+    
+    manager = manager_repository.find(manager_id)
+    squad = squad_repository.find(squad_id)
+    seasons = season_repository.single_squad_all_seasons(squad_id)
+    players = squad_repository.get_squad_players(squad_id)
+    if manager is None:
+        return "Manager not found", 404
+    if squad is None:
+        return "Squad not found", 404
+    if request.method == 'POST':
+        player_name = request.form['player_name']
+        player_position = request.form['player_position']
+        player = Player(None, player_name, player_position)
+        if not player.is_valid():
+            return render_template('squads/new.html', manager=manager, squad=squad, errors=player.generate_errors()), 400
+        player_repository.create_squad_player(player, squad_id, manager_id)
+        return redirect(f"/managers/{manager.id}/squads/{squad.id}")
+    return render_template('squads/new_player.html', manager=manager, squad=squad, seasons=seasons, players=players)
 
 
 # DISPLAY PLAYERS CREATION PAGE // CREATE PLAYERS
@@ -114,8 +141,6 @@ def create_player(manager_id):
     if request.method == 'POST':
         player_name = request.form['player_name']
         player_position = request.form['player_position']
-        print("Player Name:", player_name)
-        print("Player Position:", player_position)
         player = Player(None, player_name, player_position)
         if not player.is_valid():
             return render_template('players/new.html', manager=manager, players=players, errors=player.generate_errors()), 400
@@ -124,6 +149,8 @@ def create_player(manager_id):
     else:
         # players = player_repository.all()
         return render_template('players/new.html', manager=manager, players=players)
+
+
 
 # DISPLAY INDIVIDUAL PLAYER PAGE
 @app.route('/managers/<int:manager_id>/players/<int:player_id>', methods=['GET'])

@@ -1,4 +1,5 @@
 from lib.player import Player
+# from lib.manager import Manager
 
 class PlayerRepository:
     def __init__(self, connection):
@@ -36,6 +37,16 @@ class PlayerRepository:
         player.id = row["id"]
         self._connection.execute('INSERT INTO managers_players (manager_id, player_id) VALUES (%s, %s)', [manager_id, player.id])
         print(player.id)
+        return player
+    
+# TODO This is behaving oddly!
+
+    def create_squad_player(self, player, manager_id, squad_id):
+        rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
+        row = rows[0]
+        player.id = row["id"]
+        self._connection.execute('INSERT INTO squads_players (squad_id, player_id) VALUES (%s, %s)', [squad_id, player.id])
+        self._connection.execute('INSERT INTO managers_players (manager_id, player_id) VALUES (%s, %s)', [manager_id, player.id])
         return player
     
     def delete(self, id):
