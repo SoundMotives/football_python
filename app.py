@@ -21,7 +21,10 @@ app = Flask(__name__)
 # DISPLAY HOME PAGE
 @app.route('/home', methods=['GET'])
 def welcome():
-    return render_template('landing_page.html')
+    connection = get_flask_database_connection(app)
+    manager = ManagerRepository(connection)
+    managers = manager.all()
+    return render_template('landing_page.html', managers=managers)
 
 # DISPLAY MANAGER CREATION PAGE // CREATE MANAGER
 @app.route('/managers', methods=["GET", 'POST'])

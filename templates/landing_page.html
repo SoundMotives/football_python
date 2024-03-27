@@ -9,7 +9,19 @@
     <h3>The onestop shop for running your football team!</h3>
     <h3>Set yourself up as a manager to create your own squad!</h3>
 
-    <a href="/managers">Create an account</a>
+    <h3><a href="/managers">Create an account</a></h3>
+    <br> 
+    <br>
+    <br>
+    <br>
+    
+
+<h3>List of Managers</h3>    
+    {% for manager in managers %}
+    <li>
+      <a href="/managers/{{manager.id}}">{{ manager.manager_name }}</a>
+      </li>
+    {% endfor %}
 
   </body>
 </html>

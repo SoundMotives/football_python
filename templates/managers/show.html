@@ -12,7 +12,7 @@
     <!-- <form action="/managers/{{manager.id}}" method="post">
       <input type="submit" value="Update Manager Name" />
     </form> -->
-<h2>The current date is: {{ today_date_formatted }}</h2>
+    <h2>The current date is: {{ today_date_formatted }}</h2>
     <h2>Squads</h2>
     <ol>
       {% for squad in squads %}
@@ -34,15 +34,13 @@
       {% for season in seasons %}
       <li>
         <a
-          href="http://localhost:5001/managers/{{manager.id}}/squads/{{seasons.squad_id}}/seasons/{{season.id}}"
+          href="http://localhost:5001/managers/{{manager.id}}/squads/{{season.squad_id}}/seasons/{{season.id}}"
         >
-        {{season.squad_id}}  
-        Season ID: {{season.id}} 
-          Season Start: {{season.season_start_date}} - Season Length {{season.season_length}}
+          {{season.squad_id}} Season ID: {{season.id}} Season Start:
+          {{season.season_start_date}} - Season Length {{season.season_length}}
         </a>
       </li>
-      {% endfor %} 
-
+      {% endfor %}
     </ol>
 
     <h2>Players</h2>
