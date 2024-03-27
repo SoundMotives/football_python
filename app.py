@@ -50,7 +50,7 @@ def get_manager(id):
             abort(404)
             return render_template('managers/edit.html', manager=manager)
     # finding squds that match manager
-    squads = squad_repository.find_manager_squads(id)
+    squads = squad_repository.all_manager_squads(id)
     players = player_repository.find_manager_players(id)    
     return render_template('managers/show.html', manager=manager, squads=squads, players=players)
 
@@ -80,14 +80,17 @@ def get_squad(manager_id, squad_id):
     manager_repository = ManagerRepository(connection)
     squad_repository = SquadRepository(connection)   
     season_repository = SeasonRepository(connection)
+    player_repository = PlayerRepository(connection)
     manager = manager_repository.find(manager_id)
     squad = squad_repository.find(squad_id)
+    players = squad_repository.get_squad_players(squad_id)
     seasons = season_repository.all_squad_seasons(squad_id)
+
     if request.method == 'POST':   
         if manager is None:
             abort(404)
             return render_template('managers/edit.html', manager=manager)    
-    return render_template('squads/show.html', manager=manager, squad=squad, seasons=seasons)
+    return render_template('squads/show.html', manager=manager, squad=squad, players=players, seasons=seasons)
 
 
 # DISPLAY PLAYER CREATION PAGE // CREATE PLAYER
@@ -162,6 +165,26 @@ def get_season(manager_id, squad_id, season_id):
             return render_template('managers/edit.html', manager=manager)
     gameweeks = gameweek_repository.all_season_gameweeks(season_id)    
     return render_template('seasons/show.html', manager=manager, squad=squad, season=season, gameweeks=gameweeks)
+
+# DISPLAY A SINGLE GAMEWEEK PAGE
+@app.route('/managers/<int:manager_id>/squads/<int:squad_id>/seasons/<int:season_id>/gameweeks/<int:gameweek_id>', methods=['GET', 'POST'])
+def get_gameweek(manager_id, squad_id, season_id, gameweek_id):
+    connection = get_flask_database_connection(app)
+    manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)   
+    season_repository = SeasonRepository(connection)
+    gameweek_repository = GameWeekRepository(connection)
+    manager = manager_repository.find(manager_id)
+    squad = squad_repository.find(squad_id)
+    season = season_repository.find(season_id)
+    gameweek = gameweek_repository.find(gameweek_id)
+    if request.method == 'POST':   
+        if manager is None:
+            abort(404)
+            return render_template('managers/edit.html', manager=manager)
+    gameweek = gameweek_repository.find(gameweek_id)    
+    return render_template('gameweeks/show.html', manager=manager, squad=squad, season=season, gameweek=gameweek)
+
 
 
 # This imports some more example routes for you to see how they work

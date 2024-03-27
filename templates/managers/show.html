@@ -18,7 +18,8 @@
       {% for squad in squads %}
       <li>
         <!-- We can use {{ placeholders }} in HTML attributes too -->
-        <a href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}"
+        <a
+          href="http://localhost:5001/managers/{{manager.id}}/squads/{{squad.id}}"
           >{{squad.squad_name}} - Click to manage seasons</a
         >
       </li>

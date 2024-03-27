@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS game_results;
 DROP TABLE IF EXISTS game_weeks;
 DROP TABLE IF EXISTS managers_squads;
 DROP TABLE IF EXISTS managers_players;
+DROP TABLE IF EXISTS squads_players;
 DROP TABLE IF EXISTS players;
 DROP TABLE IF EXISTS seasons;
 DROP TABLE IF EXISTS squads;
@@ -29,6 +30,7 @@ CREATE SEQUENCE IF NOT EXISTS squads_id_seq;
 CREATE SEQUENCE IF NOT EXISTS players_id_seq;
 CREATE SEQUENCE IF NOT EXISTS managers_players_seq;
 CREATE SEQUENCE IF NOT EXISTS managers_squads_seq;
+CREATE SEQUENCE IF NOT EXISTS squads_players_seq;
 CREATE SEQUENCE IF NOT EXISTS seasons_id_seq;
 CREATE SEQUENCE IF NOT EXISTS game_weeks_id_seq;
 
@@ -68,6 +70,11 @@ CREATE TABLE managers_players (
     PRIMARY KEY (manager_id, player_id)
 );
 
+CREATE TABLE squads_players (
+    squad_id INTEGER REFERENCES squads(id),
+    player_id INTEGER REFERENCES players(id),
+    PRIMARY KEY (squad_id, player_id)
+);
 -- CREATE TABLE squad_player (
 --     manager_id INTEGER REFERENCES manager(id),
 --     player_id INTEGER REFERENCES player(id),
@@ -90,6 +97,9 @@ CREATE TABLE game_weeks (
     week_number INTEGER,
     game_week_date DATE,
     availability_full BOOLEAN DEFAULT FALSE,
+    black_team_list INTEGER[],
+    white_team_list INTEGER[],
+    game_result BOOLEAN,
     season_id INTEGER REFERENCES seasons(id)
 );
 
@@ -152,6 +162,24 @@ INSERT INTO managers_players(manager_id, player_id) VALUES
     (2, 13),
     (2, 14),
     (1, 15);
+
+
+INSERT INTO squads_players(squad_id, player_id) VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 8),
+    (2, 9),
+    (2, 10),
+    (2, 11),
+    (2, 12),
+    (2, 13),
+    (2, 14),
+    (2, 15);
 
 -- Insert data into season table
 INSERT INTO seasons (id, season_start_date, season_length, game_weeks, squad_id) VALUES

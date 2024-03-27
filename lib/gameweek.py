@@ -3,15 +3,14 @@ from lib.player import Player
 from lib.gameresult import GameResult
 
 class GameWeek:
-    def __init__(self, week_number, id=None, game_week_date=None, availability_full=False, black_team_list=[], white_team_list=[]) -> None:
+    def __init__(self, week_number, id=None, game_week_date=None, availability_full=False, black_team_list=None, white_team_list=None, game_result=None) -> None:
         self.id = id
         self.week_number = week_number
         self.game_week_date = game_week_date
-        self.available_players =  []
-        self.availability_full = False
-        self.black_team_list = []
-        self.white_team_list = []
-        self.game_result = None
+        self.availability_full = availability_full
+        self.black_team_list = black_team_list if black_team_list is not None else []
+        self.white_team_list = white_team_list if white_team_list is not None else []
+        self.game_result = game_result
         # self.final_score = {self.black_team: None, self.white_team: None}
 
     def __repr__(self) -> str:  

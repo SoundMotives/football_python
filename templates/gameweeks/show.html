@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Squad Page</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Football Manager</h1>
+    <h2>Manager Details</h2>
+    <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
+    <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
+    <h2>Squad Details</h2>
+    <p class="t-squad-name">Squad Name: {{squad.squad_name}}</p>
+    <h2>Season: {{season.season_start_date}}</h2>
+    <h2>Gameweek {{gameweek.game_week_number}}: {{gameweek.game_week_date}}</h2>
+    
+    <h2>Pre-game Preparation</h2>
+
+    <p>Players Confirmed To Play</p>
+
+    <ol>
+      {% for player in gameweek.available_players %}
+      <li>
+        <!-- We can use {{ placeholders }} in HTML attributes too -->
+        <a
+          href="http://localhost:5001/managers/{{manager.id}}/players/{{player.id}}"
+          >Player: {{player.player_name}} - {{player.player_position}}</a
+        >
+      </li>
+      {% endfor %}
+    </ol>
+
+    <p>Availability full: {{gameweek.availability_full}}</p>
+
+    <p>Black Team List</p>
+
+    <p>White Team List</p>
+
+    <h2>Post-game Reporting</h2>
+
+    <h2>Game Result: {{gameweek.game_result}}</h2>
+
+    <!-- <form action="/managers/{{manager.id}}/squads/{{squad.id}}/seasons" method="get">
+        <input type="submit" value="Create a new season">
+      </form> -->
+    <h2>Players</h2>
+    <form action="/managers/{{manager.id}}/players" method="get">
+      <input type="submit" value="Add a player" />
+    </form>
+    <!-- This is a link to another page. -->
+    <!-- The browser will send `GET /books/new` when the user clicks this -->
+    <a href="/managers/{{manager.id}}">Back to manager home</a>
+  </body>
+</html>
+
+<!-- self.available_players =  []
+self.availability_full = False
+self.black_team_list = []
+self.white_team_list = []
+self.game_result = None -->
