@@ -135,10 +135,10 @@ INSERT INTO players (id, player_name, player_position) VALUES
     (8, 'Lee', 'midfielder'),
     (9, 'Seb', 'attacker'),
     (10, 'Kieran', 'midfielder'),
-    (11, 'Jack', 'defender'),
-    (12, 'Lewis', 'midfielder'),
+    (11, 'Angus', 'defender'),
+    (12, 'Avi', 'midfielder'),
     (13, 'Giacomo', 'midfielder'),
-    (14, 'Ant', 'goalkeeper'),
+    (14, 'Iain', 'midfielder'),
     (15, 'David', 'midfielder');
 
 INSERT INTO managers_squads(manager_id, squad_id) VALUES
@@ -166,20 +166,20 @@ INSERT INTO managers_players(manager_id, player_id) VALUES
 
 INSERT INTO squads_players(squad_id, player_id) VALUES
     (1, 1),
-    (1, 2),
-    (1, 3),
+    (2, 2),
+    (2, 3),
     (1, 4),
     (1, 5),
     (1, 6),
     (1, 7),
     (1, 8),
-    (2, 9),
-    (2, 10),
+    (1, 9),
+    (1, 10),
     (2, 11),
     (2, 12),
     (2, 13),
     (2, 14),
-    (2, 15);
+    (1, 15);
 
 -- Insert data into season table
 INSERT INTO seasons (id, season_start_date, season_length, game_weeks, squad_id) VALUES
@@ -187,31 +187,31 @@ INSERT INTO seasons (id, season_start_date, season_length, game_weeks, squad_id)
     (2,'2024-04-07', 12, ARRAY[]::INTEGER[], 2);
 
 -- Insert data into game_week table
-INSERT INTO game_weeks (week_number, game_week_date, season_id) VALUES
-    (1, '2024-03-25', 1),
-    (2, '2024-03-25', 1),
-    (3, '2024-03-25', 1),
-    (4, '2024-03-25', 1),
-    (5, '2024-03-25', 1),
-    (6, '2024-03-25', 1),
-    (7, '2024-03-25', 1),
-    (8, '2024-03-25', 1),
-    (9, '2024-03-25', 1),
-    (10,'2024-03-25', 1),
-    (11,'2024-03-25', 1),
-    (12,'2024-03-25', 1),
-    (1, '2024-03-25', 2),
-    (2, '2024-03-25', 2),
-    (3, '2024-03-25', 2),
-    (4, '2024-03-25', 2),
-    (5, '2024-03-25', 2),
-    (6, '2024-03-25', 2),
-    (7, '2024-03-25', 2),
-    (8, '2024-03-25', 2),
-    (9, '2024-03-25', 2),
-    (10, '2024-03-25', 2),
-    (11, '2024-03-25', 2),
-    (12, '2024-03-25', 2);
+INSERT INTO game_weeks (id, week_number, game_week_date, season_id) VALUES
+    (1, 1, '2024-03-25', 1),
+    (2, 2, '2024-03-25', 1),
+    (3, 3, '2024-03-25', 1),
+    (4, 4, '2024-03-25', 1),
+    (5, 5, '2024-03-25', 1),
+    (6, 6, '2024-03-25', 1),
+    (7, 7, '2024-03-25', 1),
+    (8, 8, '2024-03-25', 1),
+    (9, 9, '2024-03-25', 1),
+    (10, 10,'2024-03-25', 1),
+    (11, 11,'2024-03-25', 1),
+    (12, 12,'2024-03-25', 1),
+    (13, 1, '2024-03-25', 2),
+    (14, 2, '2024-03-25', 2),
+    (15, 3, '2024-03-25', 2),
+    (16, 4, '2024-03-25', 2),
+    (17, 5, '2024-03-25', 2),
+    (18, 6, '2024-03-25', 2),
+    (19, 7, '2024-03-25', 2),
+    (20, 8, '2024-03-25', 2),
+    (21, 9, '2024-03-25', 2),
+    (22, 10, '2024-03-25', 2),
+    (23, 11, '2024-03-25', 2),
+    (24, 12, '2024-03-25', 2);
 
 -- INSERT INTO game_result (week_number, season_id) VALUES
 
