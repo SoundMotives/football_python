@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <h1>Manager Home</h1>
+    <a href="/managers/{{manager.id}}"><h1>Manager Hub</h1></a>
+    <h1>Home page</h1>
     <h2>Manager Details</h2>
     <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
     <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
@@ -48,7 +49,8 @@
       {% for player in players %}
       <li>
         <!-- We can use {{ placeholders }} in HTML attributes too -->
-        <a href="http://localhost:5001/managers/{{manager.id}}/players/{{player.id}}"
+        <a
+          href="http://localhost:5001/managers/{{manager.id}}/players/{{player.id}}"
           >{{player.player_name}} - {{player.player_position}}</a
         >
       </li>
@@ -57,11 +59,7 @@
     <form action="/managers/{{manager.id}}/players" method="get">
       <input type="submit" value="Add a player" />
     </form>
-    <!-- To have a delete button with a post request, we need a form -->
-    <!-- Note, we use `POST /books/<id>/delete because browsers can't send DELETE methods! -->
 
-    <!-- This is a link to another page. -->
-    <!-- The browser will send `GET /books/new` when the user clicks this -->
-    <a href="/managers/{{manager.id}}">Back to manager home</a>
+    <a href="http://localhost:5001/home">Back to home</a>
   </body>
 </html>

@@ -5,7 +5,8 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <h1>Football Manager</h1>
+    <a href="/managers/{{manager.id}}"><h1>Manager Hub</h1></a>
+    <h1>Season page</h1>
     <h2>Manager Details</h2>
     <p class="t-manager-name">Manager Name: {{manager.manager_name}}</p>
     <p class="t-manager-email">Manager Email: {{manager.manager_email}}</p>
@@ -42,8 +43,7 @@
       <form action="/managers/{{manager.id}}/players" method="get">
         <input type="submit" value="Add a player">
       </form>
-    <!-- This is a link to another page. -->
-    <!-- The browser will send `GET /books/new` when the user clicks this -->
-    <a href="/managers/{{manager.id}}">Back to manager home</a>
+
+    <a href="http://localhost:5001/home">Back to home</a>
   </body>
 </html>

@@ -16,8 +16,6 @@ from datetime import datetime
 # Create a new Flask app
 app = Flask(__name__)
 
-
-
 # DISPLAY HOME PAGE
 @app.route('/home', methods=['GET'])
 def welcome():
