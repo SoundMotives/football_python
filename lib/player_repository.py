@@ -16,8 +16,10 @@ class PlayerRepository:
     def find(self, id):
         rows = self._connection.execute('SELECT * FROM players WHERE id = %s', [id])
         row = rows[0]
-        return Player(row["id"], row["player_name"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
-
+        if row:  # Ensure row exists
+            return Player(row["id"], row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
+        else:
+            return None
 # Has to use join table
     def find_manager_players(self, manager_id):
         rows = self._connection.execute("""SELECT players.id, players.player_name, players.player_position
