@@ -41,13 +41,14 @@ class PlayerRepository:
         print(player.id)
         return player
     
-# TODO This is behaving oddly!
+# TODO PICK UP HERE: IMPELEMENT NEW APPROACH TO ASSIGNING MULTIPLE SQUAD IDS TO SINGLE PLAYER
 
-    def create_squad_player(self, player, squad_id, manager_id):
+    def create_squad_player(self, player, squad_ids, manager_id):
         rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
-        row = rows[0]
-        player.id = row["id"]
-        self._connection.execute('INSERT INTO squads_players (squad_id, player_id) VALUES (%s, %s)', [squad_id, player.id])
+        player.id = rows[0]["id"]
+        for squad_id in squad_ids:
+            self._connection.execute('INSERT INTO squads_players (squad_id, player_id) VALUES (%s, %s)', [squad_id, player.id])
+
         self._connection.execute('INSERT INTO managers_players (manager_id, player_id) VALUES (%s, %s)', [manager_id, player.id])
         return player
     

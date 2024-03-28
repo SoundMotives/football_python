@@ -72,6 +72,23 @@
         <input type="text" name="player_name" id="player_name" />
         <label for="player_position">Player Position</label>
         <input type="text" name="player_position" id="player_position" />
+
+        <!-- SELECT SINGLE ITEM FROM DROPDOWN -->
+        <!-- <label for="squad_id">Select Squad</label>
+        <select name="squad_id" id="squad_id">
+          {% for squad in squads %}
+          <option value="{{ squad.id }}">{{ squad.squad_name }}</option>
+          {% endfor %}
+        </select> -->
+
+        <!-- SELECT POTENTIALLY MULTIPLE ATTRIBUTES FROM LIST -->
+        <label for="squad_id">Select Squad(s)</label>
+        <select name="squad_id[]" id="squad_id" multiple>
+          {% for squad in squads %}
+          <option value="{{ squad.id }}">{{ squad.squad_name }}</option>
+          {% endfor %}
+        </select>
+      </p>
       </p>
       <p>
         <!-- `type` is submit here, to indicate it is a button -->
