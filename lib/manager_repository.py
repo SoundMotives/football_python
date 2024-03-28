@@ -8,7 +8,7 @@ class ManagerRepository:
         rows = self._connection.execute('SELECT * FROM managers')
         managers = []
         for row in rows:
-            manager = Manager(row["manager_name"], row["manager_email"], row["squads"], row["players"])
+            manager = Manager(row["id"], row["manager_name"], row["manager_email"], row["squads"], row["players"])
             managers.append(manager)
         return managers
     # row["id"], 

@@ -1,8 +1,8 @@
 from .season import Season
 
 class Squad:
-    def __init__(self, squad_name=""):
-        # self.id = id id=None,
+    def __init__(self, id=None, squad_name=""):
+        self.id = id 
         self.squad_name = squad_name
         self.players = []
         self.seasons = []

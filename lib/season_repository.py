@@ -8,8 +8,7 @@ class SeasonRepository:
         rows = self._connection.execute('SELECT * FROM seasons')
         seasons = []
         for row in rows:
-            season = Season(row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"])
-            # row["id"], 
+            season = Season(row["id"], row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"])
             seasons.append(season)
         return seasons
 
@@ -17,8 +16,7 @@ class SeasonRepository:
         rows = self._connection.execute('SELECT * FROM seasons WHERE squad_id = %s', [squad_id])
         seasons = []
         for row in rows:
-            season = Season(row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )
-            # row["id"], 
+            season = Season(row["id"], row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )
             seasons.append(season)
         return seasons
     
@@ -44,18 +42,16 @@ class SeasonRepository:
                                         JOIN managers_squads ON squads.id = managers_squads.squad_id
                                         WHERE managers_squads.manager_id = %s""", [manager_id])
         for row in rows:
-            season = Season(row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )
-            # row["id"], 
+            season = Season(row["id"],row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )  
             season.squad_name = row["squad_name"]
             seasons.append(season)
         return seasons
 
-
     def find(self, id):
         rows = self._connection.execute('SELECT * FROM seasons WHERE id = %s', [id])
         row = rows[0]
-        return Season(row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )
-    # row["id"], 
+        return Season(row["id"], row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )
+
 #TODO Why does this look so different?
 # Create has to also update managers_players table
     def create(self, season, squad_id):

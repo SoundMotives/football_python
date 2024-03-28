@@ -9,8 +9,7 @@ class SquadRepository:
         rows = self._connection.execute('SELECT * FROM squads')
         squads = []
         for row in rows:
-            squad = Squad(row["squad_name"])
-            # row["id"], 
+            squad = Squad(row["id"], row["squad_name"])
             squads.append(squad)
         return squads
 
@@ -22,8 +21,7 @@ class SquadRepository:
                                         WHERE managers_squads.manager_id = %s""", [manager_id])
         squads = []
         for row in rows:
-            squad = Squad(row["squad_name"])
-            # row["id"], 
+            squad = Squad(row["id"], row["squad_name"])
             squads.append(squad)
         return squads
     
@@ -34,16 +32,15 @@ class SquadRepository:
                                         WHERE squads_players.squad_id = %s""", [squad_id])
         squad_players = []
         for row in rows:
-            player = Player(row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
-            # row["id"], 
+            player = Player(row["id"], row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
             squad_players.append(player)
         return squad_players
         
     def find(self, id):
         rows = self._connection.execute('SELECT * FROM squads WHERE id = %s', [id])
         row = rows[0]
-        return Squad(row["squad_name"])
-    # row["id"], 
+        return Squad(row["id"], row["squad_name"])
+
     def find_squads_by_player_id(self, player_id):
         rows = self._connection.execute("""SELECT squads.id, squads.squad_name
                                         FROM squads_players 
@@ -51,8 +48,7 @@ class SquadRepository:
                                         WHERE squads_players.player_id = %s""", [player_id])
         squads = []
         for row in rows:
-            squad = Squad(row["squad_name"])
-            # row["id"], 
+            squad = Squad(row["id"], row["squad_name"])
             squads.append(squad)
         return squads
         

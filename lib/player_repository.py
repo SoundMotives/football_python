@@ -49,6 +49,13 @@ class PlayerRepository:
     
 # TODO PICK UP HERE: IMPELEMENT NEW APPROACH TO ASSIGNING MULTIPLE SQUAD IDS TO SINGLE PLAYER
 
+    def create_single_squad_player(self, player, squad_id, manager_id):
+        rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
+        player.id = rows[0]["id"]
+        self._connection.execute('INSERT INTO squads_players (squad_id, player_id) VALUES (%s, %s)', [squad_id, player.id])
+        self._connection.execute('INSERT INTO managers_players (manager_id, player_id) VALUES (%s, %s)', [manager_id, player.id])
+        return player
+    
     def create_squad_player(self, player, squad_ids, manager_id):
         rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
         player.id = rows[0]["id"]
@@ -58,6 +65,7 @@ class PlayerRepository:
         self._connection.execute('INSERT INTO managers_players (manager_id, player_id) VALUES (%s, %s)', [manager_id, player.id])
         return player
     
+
     def delete(self, id):
         rows = self._connection.execute('DELETE FROM players WHERE id = %s', [id])
         return None

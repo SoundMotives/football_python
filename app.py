@@ -33,8 +33,7 @@ def create_manager():
     if request.method == 'POST':
         manager_name = request.form['manager_name']
         manager_email = request.form['manager_email']
-        manager = Manager(manager_name, manager_email)
-        # None, 
+        manager = Manager(None, manager_name, manager_email)
         if not manager.is_valid():
             return render_template('managers/new.html', manager=manager, errors=manager.generate_errors()), 400
         manager = repository.create(manager)
@@ -121,7 +120,7 @@ def create_player_from_squad(manager_id, squad_id):
         player = Player(None, player_name, player_position)
         if not player.is_valid():
             return render_template('squads/new.html', manager=manager, squad=squad, errors=player.generate_errors()), 400
-        player_repository.create_squad_player(player, squad_id, manager_id)
+        player_repository.create_single_squad_player(player, squad_id, manager_id)
         return redirect(f"/managers/{manager.id}/squads/{squad.id}")
     return render_template('squads/new_player.html', manager=manager, squad=squad, seasons=seasons, players=players)
 
@@ -199,11 +198,12 @@ def create_season(manager_id, squad_id):
     if squad is None:
         return "Squad not found", 404
     if request.method == 'POST':
+        if 'season_start_date' not in request.form or 'season_length' not in request.form:
+            return render_template('seasons/new.html', manager=manager, squad=squad, errors=["Season start date and length are required."]), 400
         season_start_date = request.form['season_start_date']
         season_length = request.form['season_length']
         # game_weeks = request.form['game_weeks']
         # season_complete = request.form['season_complete']
-
         season = Season(None, season_start_date, season_length) #, game_weeks, season_complete
         if not season.is_valid():
             return render_template('seasons/new.html', manager=manager, squad=squad, errors=season.generate_errors()), 400

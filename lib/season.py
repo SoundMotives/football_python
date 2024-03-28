@@ -1,8 +1,8 @@
 from lib.gameweek import GameWeek
 
 class Season:
-    def __init__(self, season_start_date=None, season_length=12, game_weeks=None, season_complete=False, squad_id=None) -> None:
-        # id=None,  self.id = id 
+    def __init__(self, id=None, season_start_date=None, season_length=12, game_weeks=None, season_complete=False, squad_id=None) -> None:
+        self.id = id 
         self.season_start_date = season_start_date
         self.season_length = season_length
         self.game_weeks = game_weeks or []

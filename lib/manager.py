@@ -2,12 +2,12 @@ from lib.squad import Squad
 from lib.player import Player
 
 class Manager:
-    def __init__(self, manager_name="", manager_email=""):
-        # self.id = id id=None,
+    def __init__(self, id=None, manager_name="", manager_email="", squads="", players=""):
+        self.id = id 
         self.manager_name = manager_name
         self.manager_email = manager_email
-        # self.squads = squads or []
-        # self.players = players or []
+        self.squads = squads or []
+        self.players = players or []
 
     def __eq__(self, other) -> bool:
         return self.__dict__ == other.__dict__
