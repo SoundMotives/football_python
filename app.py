@@ -133,8 +133,10 @@ def create_player(manager_id):
     connection = get_flask_database_connection(app)
     manager_repository = ManagerRepository(connection)
     player_repository = PlayerRepository(connection)
+    season_repository = SeasonRepository(connection)
     manager = manager_repository.find(manager_id)
-    players = player_repository.all()
+    players = player_repository.find_manager_players(manager_id)
+    seasons = season_repository.manager_all_seasons(manager_id)
     if manager is None:
         return "Manager not found", 404
     if request.method == 'POST':
@@ -142,12 +144,12 @@ def create_player(manager_id):
         player_position = request.form['player_position']
         player = Player(None, player_name, player_position)
         if not player.is_valid():
-            return render_template('players/new.html', manager=manager, players=players, errors=player.generate_errors()), 400
+            return render_template('players/new.html', manager=manager, players=players, seasons=seasons, errors=player.generate_errors()), 400
         player_repository.create(player, manager_id)
         return redirect(f"/managers/{manager.id}/players/")
     else:
         # players = player_repository.all()
-        return render_template('players/new.html', manager=manager, players=players)
+        return render_template('players/new.html', manager=manager, players=players, seasons=seasons)
 
 # DISPLAY INDIVIDUAL PLAYER PAGE
 @app.route('/managers/<int:manager_id>/players/<int:player_id>', methods=['GET'])

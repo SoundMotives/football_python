@@ -32,6 +32,21 @@ class SeasonRepository:
                 season.squad_name = row["squad_name"]
                 seasons.append(season)
         return seasons
+    
+    #  TRYING TO POPULATE THE SEASONS FIELD IN PLAYER CREATION - BASED ONLY ON MANAGER      
+    def manager_all_seasons(self, manager_id):
+        seasons = [] 
+        rows = self._connection.execute("""SELECT seasons. *, squads.squad_name 
+                                        FROM seasons 
+                                        JOIN squads ON seasons.squad_id = squads.id 
+                                        JOIN managers_squads ON squads.id = managers_squads.squad_id
+                                        WHERE managers_squads.manager_id = %s""", [manager_id])
+        for row in rows:
+            season = Season(row["id"], row["season_start_date"], row["season_length"], row["game_weeks"], row["season_complete"], row["squad_id"] )
+            season.squad_name = row["squad_name"]
+            seasons.append(season)
+        return seasons
+
 
     def find(self, id):
         rows = self._connection.execute('SELECT * FROM seasons WHERE id = %s', [id])
