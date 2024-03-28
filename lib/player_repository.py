@@ -9,7 +9,8 @@ class PlayerRepository:
         rows = self._connection.execute('SELECT * FROM players')
         players = []
         for row in rows:
-            player = Player(row["id"], row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"], )
+            player = Player(row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"])
+            # row["id"], 
             players.append(player)
         return players
     
@@ -17,22 +18,27 @@ class PlayerRepository:
         rows = self._connection.execute('SELECT * FROM players WHERE id = %s', [id])
         row = rows[0]
         if row:  # Ensure row exists
-            return Player(row["id"], row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
+            return Player( row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
+        # row["id"],
         else:
             return None
 # Has to use join table
     def find_manager_players(self, manager_id):
-        rows = self._connection.execute("""SELECT players.id, players.player_name, players.player_position
+        rows = self._connection.execute("""SELECT players.*  
                                         FROM managers_players 
                                         INNER JOIN players ON managers_players.player_id = players.id 
                                         WHERE managers_players.manager_id = %s""", [manager_id])
+        # REMOVED FROM BESIDE SELECT ROW 25 = players.id, players.player_name, players.player_position
+                                        
+        
         players = []
         for row in rows:
-            player = Player(row["id"], row["player_name"], row["player_position"], )
+            player = Player(row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"])
+            # row["id"], 
             players.append(player)
         return players
 
-# Create has to also update managers_players table
+# Create has to also update managers_players table ** ALSO LOOKS ODD: LIKE SEASON! ** TODO
     def create(self, player, manager_id):
         rows = self._connection.execute('INSERT INTO players (player_name, player_position) VALUES (%s, %s) RETURNING id',[player.player_name, player.player_position])
         row = rows[0]

@@ -38,7 +38,9 @@ CREATE SEQUENCE IF NOT EXISTS game_weeks_id_seq;
 CREATE TABLE managers (
     id SERIAL PRIMARY KEY,
     manager_name VARCHAR(255),
-    manager_email VARCHAR(255)
+    manager_email VARCHAR(255),
+    squads INTEGER[],
+    players INTEGER[] 
 );
 
 -- Create squad table
@@ -46,7 +48,6 @@ CREATE TABLE squads (
     id SERIAL PRIMARY KEY,
     squad_name VARCHAR(255)
 );
-
 
 -- Create player table
 CREATE TABLE players (
@@ -57,29 +58,6 @@ CREATE TABLE players (
     player_goals_for INTEGER DEFAULT 0,
     player_goals_against INTEGER DEFAULT 0
 );
-
-CREATE TABLE managers_squads (
-    manager_id INTEGER REFERENCES managers(id),
-    squad_id INTEGER REFERENCES squads(id),
-    PRIMARY KEY (manager_id, squad_id)
-);
-
-CREATE TABLE managers_players (
-    manager_id INTEGER REFERENCES managers(id),
-    player_id INTEGER REFERENCES players(id),
-    PRIMARY KEY (manager_id, player_id)
-);
-
-CREATE TABLE squads_players (
-    squad_id INTEGER REFERENCES squads(id),
-    player_id INTEGER REFERENCES players(id),
-    PRIMARY KEY (squad_id, player_id)
-);
--- CREATE TABLE squad_player (
---     manager_id INTEGER REFERENCES manager(id),
---     player_id INTEGER REFERENCES player(id),
---     PRIMARY KEY (manager_id, player_id)
--- );
 
 -- Create season table
 CREATE TABLE seasons (
@@ -113,6 +91,30 @@ CREATE TABLE game_results (
     game_week_id INTEGER REFERENCES game_weeks(id)
 );
 
+
+CREATE TABLE managers_squads (
+    manager_id INTEGER REFERENCES managers(id),
+    squad_id INTEGER REFERENCES squads(id),
+    PRIMARY KEY (manager_id, squad_id)
+);
+
+CREATE TABLE managers_players (
+    manager_id INTEGER REFERENCES managers(id),
+    player_id INTEGER REFERENCES players(id),
+    PRIMARY KEY (manager_id, player_id)
+);
+
+CREATE TABLE squads_players (
+    squad_id INTEGER REFERENCES squads(id),
+    player_id INTEGER REFERENCES players(id),
+    PRIMARY KEY (squad_id, player_id)
+);
+-- CREATE TABLE squad_player (
+--     manager_id INTEGER REFERENCES manager(id),
+--     player_id INTEGER REFERENCES player(id),
+--     PRIMARY KEY (manager_id, player_id)
+-- );
+
 -- Insert data into manager table
 INSERT INTO managers (manager_name, manager_email) VALUES
     ('Lee', 'lee@example.com'),
@@ -124,22 +126,22 @@ INSERT INTO squads (squad_name) VALUES
     ('Weekend Shacklewell Sharks');
 
 -- Insert data into player table
-INSERT INTO players (id, player_name, player_position) VALUES
-    (1, 'Tiago', 'defender'),
-    (2, 'Ehren', 'defender'),
-    (3, 'Toby', 'midfielder'),
-    (4, 'San', 'defender'),
-    (5, 'VD', 'defender'),
-    (6, 'Nils', 'midfielder'),
-    (7, 'Marco', 'midfielder'),
-    (8, 'Lee', 'midfielder'),
-    (9, 'Seb', 'attacker'),
-    (10, 'Kieran', 'midfielder'),
-    (11, 'Angus', 'defender'),
-    (12, 'Avi', 'midfielder'),
-    (13, 'Giacomo', 'midfielder'),
-    (14, 'Iain', 'midfielder'),
-    (15, 'David', 'midfielder');
+INSERT INTO players (player_name, player_position) VALUES
+    ('Tiago', 'defender'),
+    ('Ehren', 'defender'),
+    ('Toby', 'midfielder'),
+    ('San', 'defender'),
+    ('VD', 'defender'),
+    ('Nils', 'midfielder'),
+    ('Marco', 'midfielder'),
+    ('Lee', 'midfielder'),
+    ('Seb', 'attacker'),
+    ('Kieran', 'midfielder'),
+    ('Angus', 'defender'),
+    ('Avi', 'midfielder'),
+    ('Giacomo', 'midfielder'),
+    ('Iain', 'midfielder'),
+    ('David', 'midfielder');
 
 INSERT INTO managers_squads(manager_id, squad_id) VALUES
     (1, 1),
@@ -182,36 +184,38 @@ INSERT INTO squads_players(squad_id, player_id) VALUES
     (1, 15);
 
 -- Insert data into season table
-INSERT INTO seasons (id, season_start_date, season_length, game_weeks, squad_id) VALUES
-    (1,'2024-04-01', 12, ARRAY[]::INTEGER[], 1),
-    (2,'2024-04-07', 12, ARRAY[]::INTEGER[], 2);
+INSERT INTO seasons (season_start_date, season_length, game_weeks, squad_id) VALUES
+-- id, 
+    ('2024-04-01', 12, ARRAY[]::INTEGER[], 1),
+    ('2024-04-07', 12, ARRAY[]::INTEGER[], 2);
 
 -- Insert data into game_week table
-INSERT INTO game_weeks (id, week_number, game_week_date, season_id) VALUES
-    (1, 1, '2024-03-25', 1),
-    (2, 2, '2024-03-25', 1),
-    (3, 3, '2024-03-25', 1),
-    (4, 4, '2024-03-25', 1),
-    (5, 5, '2024-03-25', 1),
-    (6, 6, '2024-03-25', 1),
-    (7, 7, '2024-03-25', 1),
-    (8, 8, '2024-03-25', 1),
-    (9, 9, '2024-03-25', 1),
-    (10, 10,'2024-03-25', 1),
-    (11, 11,'2024-03-25', 1),
-    (12, 12,'2024-03-25', 1),
-    (13, 1, '2024-03-25', 2),
-    (14, 2, '2024-03-25', 2),
-    (15, 3, '2024-03-25', 2),
-    (16, 4, '2024-03-25', 2),
-    (17, 5, '2024-03-25', 2),
-    (18, 6, '2024-03-25', 2),
-    (19, 7, '2024-03-25', 2),
-    (20, 8, '2024-03-25', 2),
-    (21, 9, '2024-03-25', 2),
-    (22, 10, '2024-03-25', 2),
-    (23, 11, '2024-03-25', 2),
-    (24, 12, '2024-03-25', 2);
+INSERT INTO game_weeks ( week_number, game_week_date, season_id) VALUES
+-- id,
+    (1, '2024-03-25', 1),
+    (2, '2024-03-25', 1),
+    (3, '2024-03-25', 1),
+    (4, '2024-03-25', 1),
+    (5, '2024-03-25', 1),
+    (6, '2024-03-25', 1),
+    (7, '2024-03-25', 1),
+    (8, '2024-03-25', 1),
+    (9, '2024-03-25', 1),
+    (10,'2024-03-25', 1),
+    (11,'2024-03-25', 1),
+    (12,'2024-03-25', 1),
+    (1, '2024-03-25', 2),
+    (2, '2024-03-25', 2),
+    (3, '2024-03-25', 2),
+    (4, '2024-03-25', 2),
+    (5, '2024-03-25', 2),
+    (6, '2024-03-25', 2),
+    (7, '2024-03-25', 2),
+    (8, '2024-03-25', 2),
+    (9, '2024-03-25', 2),
+    (10, '2024-03-25', 2),
+    (11, '2024-03-25', 2),
+    (12, '2024-03-25', 2);
 
 -- INSERT INTO game_result (week_number, season_id) VALUES
 

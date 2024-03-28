@@ -3,8 +3,8 @@ from lib.player import Player
 from lib.gameresult import GameResult
 
 class GameWeek:
-    def __init__(self, week_number, id=None, game_week_date=None, availability_full=False, black_team_list=None, white_team_list=None, game_result=None) -> None:
-        self.id = id
+    def __init__(self, week_number="", game_week_date=None, availability_full=False, black_team_list=None, white_team_list=None, game_result=None) -> None:
+        # self.id = id id=None,
         self.week_number = week_number
         self.game_week_date = game_week_date
         self.availability_full = availability_full

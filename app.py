@@ -33,7 +33,8 @@ def create_manager():
     if request.method == 'POST':
         manager_name = request.form['manager_name']
         manager_email = request.form['manager_email']
-        manager = Manager(None, manager_name, manager_email)
+        manager = Manager(manager_name, manager_email)
+        # None, 
         if not manager.is_valid():
             return render_template('managers/new.html', manager=manager, errors=manager.generate_errors()), 400
         manager = repository.create(manager)

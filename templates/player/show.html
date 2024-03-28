@@ -15,7 +15,7 @@
     <ul>
       {% for squad in squads %}
       <li>
-        {{squad.squad_name}} 
+        <a href="/managers/{{manager.id}}/squads/{{squad.id}}">{{squad.squad_name}}</a> 
       </li>
       {% endfor %}
     </ul>

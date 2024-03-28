@@ -1,8 +1,8 @@
 from lib.gameweek import GameWeek
 
 class Season:
-    def __init__(self, id=None, season_start_date=None, season_length=12, game_weeks=None, season_complete=False, squad_id=None) -> None:
-        self.id = id 
+    def __init__(self, season_start_date=None, season_length=12, game_weeks=None, season_complete=False, squad_id=None) -> None:
+        # id=None,  self.id = id 
         self.season_start_date = season_start_date
         self.season_length = season_length
         self.game_weeks = game_weeks or []
@@ -34,13 +34,13 @@ class Season:
         else:
             return ", ".join(errors)
         
-    def create_game_weeks(self, season_length):
-        for i in range(1, season_length + 1):
-            game_week = GameWeek(f"Week {i}")
-            self.game_weeks.append(game_week)
+    # def create_game_weeks(self, season_length):
+    #     for i in range(1, season_length + 1):
+    #         game_week = GameWeek(f"Week {i}")
+    #         self.game_weeks.append(game_week)
 
-    def check_season_completion(self):
-        completed_game_weeks = sum(1 for game_week in self.game_weeks if game_week.availability_full)
-        if completed_game_weeks >= 12:  # Assuming each game week has availability_full attribute
-            self.season_complete = True
-            print("Season complete!")
+    # def check_season_completion(self):
+    #     completed_game_weeks = sum(1 for game_week in self.game_weeks if game_week.availability_full)
+    #     if completed_game_weeks >= 12:  # Assuming each game week has availability_full attribute
+    #         self.season_complete = True
+    #         print("Season complete!")

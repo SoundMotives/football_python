@@ -2,7 +2,8 @@ from lib.player import Player
 # from lib.gameweek import GameWeek
 
 class GameResult:
-    def __init__(self, black_team_list, white_team_list):
+    def __init__(self, black_team_list="", white_team_list=""):
+        # id=None, 
         self.black_team_list = black_team_list
         self.white_team_list = white_team_list   
         self.final_score = {"black_team": 0, "white_team": 0}
