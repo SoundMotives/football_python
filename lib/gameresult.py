@@ -2,11 +2,11 @@ from lib.player import Player
 # from lib.gameweek import GameWeek
 
 class GameResult:
-    def __init__(self, black_team_list="", white_team_list=""):
-        # id=None, 
+    def __init__(self, id=None, black_team_list="", white_team_list="", final_score={"black_team": 0, "white_team": 0}, winning_team=None):
+        self.id = id
         self.black_team_list = black_team_list
         self.white_team_list = white_team_list   
-        self.final_score = {"black_team": 0, "white_team": 0}
+        self.final_score = final_score
         self.winning_team = None
 
     def record_goals(self, black_team_goals, white_team_goals):

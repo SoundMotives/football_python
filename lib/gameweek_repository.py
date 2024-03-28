@@ -14,14 +14,12 @@ class GameWeekRepository:
     def find(self, id):
         rows = self._connection.execute('SELECT * FROM game_weeks WHERE id = %s', [id])
         row = rows[0]
-        return GameWeek(row["week_number"], row["game_week_date"], row["availability_full"], row["black_team_list"], row["white_team_list"], row["game_result"])
-# row["id"], 
+        return GameWeek(row["id"], row["week_number"], row["game_week_date"], row["availability_full"], row["black_team_list"], row["white_team_list"], row["game_result"])
 
     def all_season_gameweeks(self, season_id):
         rows = self._connection.execute('SELECT * FROM game_weeks WHERE season_id = %s', [season_id])
         gameweeks = []
         for row in rows:
-            gameweek = GameWeek(row["week_number"], row["game_week_date"], row["availability_full"], row["black_team_list"], row["white_team_list"], row["game_result"])
-# row["id"], 
+            gameweek = GameWeek(row["id"], row["week_number"], row["game_week_date"], row["availability_full"], row["black_team_list"], row["white_team_list"], row["game_result"])
             gameweeks.append(gameweek)
         return gameweeks

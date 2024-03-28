@@ -9,8 +9,7 @@ class PlayerRepository:
         rows = self._connection.execute('SELECT * FROM players')
         players = []
         for row in rows:
-            player = Player(row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"])
-            # row["id"], 
+            player = Player(row["id"], row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"])
             players.append(player)
         return players
     
@@ -18,8 +17,7 @@ class PlayerRepository:
         rows = self._connection.execute('SELECT * FROM players WHERE id = %s', [id])
         row = rows[0]
         if row:  # Ensure row exists
-            return Player( row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
-        # row["id"],
+            return Player(row["id"], row["player_name"], row["player_position"], row["player_points"], row["player_goals_for"], row["player_goals_against"])
         else:
             return None
 # Has to use join table
@@ -33,8 +31,7 @@ class PlayerRepository:
         
         players = []
         for row in rows:
-            player = Player(row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"])
-            # row["id"], 
+            player = Player(row["id"], row["player_name"], row["player_position"],row["player_points"], row["player_goals_for"], row["player_goals_against"])
             players.append(player)
         return players
 
