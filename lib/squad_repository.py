@@ -40,6 +40,18 @@ class SquadRepository:
         rows = self._connection.execute('SELECT * FROM squads WHERE id = %s', [id])
         row = rows[0]
         return Squad(row["id"], row["squad_name"])
+    
+    def find_squads_by_player_id(self, player_id):
+        rows = self._connection.execute("""SELECT squads.id, squads.squad_name
+                                        FROM squads_players 
+                                        INNER JOIN squads ON squads_players.squad_id = squads.id 
+                                        WHERE squads_players.player_id = %s""", [player_id])
+        squads = []
+        for row in rows:
+            squad = Squad(row["id"], row["squad_name"])
+            squads.append(squad)
+        return squads
+        
 
 # Create has to also update managers_squads table
     def create(self, squad, manager_id):

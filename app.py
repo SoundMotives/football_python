@@ -151,21 +151,21 @@ def create_player(manager_id):
         # players = player_repository.all()
         return render_template('players/new.html', manager=manager, players=players)
 
-
-
 # DISPLAY INDIVIDUAL PLAYER PAGE
 @app.route('/managers/<int:manager_id>/players/<int:player_id>', methods=['GET'])
 def get_player(manager_id, player_id):
     connection = get_flask_database_connection(app)
     player_repository = PlayerRepository(connection)
     manager_repository = ManagerRepository(connection)
+    squad_repository = SquadRepository(connection)
     manager = manager_repository.find(manager_id)
     if manager is None:
         return "Manager not found", 404
     player = player_repository.find(player_id)
     if player is None:
         return "Player not found", 404
-    return render_template('player/show.html', player=player, manager=manager)
+    squads = squad_repository.find_squads_by_player_id(player_id)
+    return render_template('player/show.html', player=player, manager=manager, squads=squads)
 
 #  DISPLAY SEASON CREATION PAGE // CREATE SEASON
 @app.route('/managers/<int:manager_id>/squads/<int:squad_id>/seasons', methods=['GET', 'POST'])

@@ -9,6 +9,16 @@
     <h2>Player Details</h2>
     <p class="t-manager-name">Player Name: {{player.player_name}}</p>
     <p class="t-manager-email">Player Position: {{player.player_position}}</p>
+
+    <h2>Squads</h2>
+    <ul>
+      {% for squad in squads %}
+      <li>
+        {{squad.squad_name}} 
+      </li>
+      {% endfor %}
+    </ul>
+
     <!-- <form action="/managers/{{manager.id}}" method="post">
       <input type="submit" value="Update Manager Name" />
     </form> -->
